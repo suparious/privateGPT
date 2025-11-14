@@ -14,9 +14,9 @@ data:
     llm:
       mode: openailike
       max_new_tokens: 2048
-      tokenizer: meta-llama/Meta-Llama-3.1-8B-Instruct
+      tokenizer: Orion-zhen/DeepHermes-3-Llama-3-8B-Preview-AWQ
       temperature: 0.1
-      context_window: 8192
+      context_window: 14992
 
     embedding:
       mode: huggingface
@@ -27,9 +27,9 @@ data:
 
     openai:
       # Point to vLLM service in cluster
-      api_base: http://vllm.vllm-inference.svc.cluster.local:8000/v1
+      api_base: http://vllm.inference.svc.cluster.local:8000/v1
       api_key: EMPTY
-      model: meta-llama/Meta-Llama-3.1-8B-Instruct
+      model: Orion-zhen/DeepHermes-3-Llama-3-8B-Preview-AWQ
       request_timeout: 600.0
 
     qdrant:
