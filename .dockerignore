@@ -1,12 +1,69 @@
-.venv
-models
+# Git
+.git
+.gitignore
+.gitattributes
 .github
+
+# Documentation
+*.md
+!README.md
+CHANGELOG.md
+CITATION.cff
+LICENSE
+
+# Development
 .vscode
-.DS_Store
+.idea
+.docker
+.pre-commit-config.yaml
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info
+dist
+build
+.pytest_cache
 .mypy_cache
 .ruff_cache
-local_data
-terraform
-tests
-Dockerfile
-Dockerfile.*
+htmlcov
+.coverage
+tests-results.xml
+
+# Data and models (will be downloaded at runtime or mounted)
+local_data/*
+!local_data/.gitkeep
+models/*
+!models/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment
+.env
+.env.*
+
+# Kubernetes deployment files
+k8s/
+*.ps1
+*.yaml
+!settings*.yaml
+
+# CI/CD
+Makefile
+scripts/
+
+# Docker
+Dockerfile*
+docker-compose*.yaml
+.dockerignore
+
+# Fern
+fern/
+
+# Tests
+tests/

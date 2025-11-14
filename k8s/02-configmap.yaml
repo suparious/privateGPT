@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: private-gpt-config
+  namespace: private-gpt
+  labels:
+    app: private-gpt
+data:
+  # PrivateGPT settings configured for vLLM integration
+  settings.yaml: |
+    server:
+      env_name: prod-k8s
+
+    llm:
+      mode: openailike
+      max_new_tokens: 2048
+      tokenizer: meta-llama/Meta-Llama-3.1-8B-Instruct
+      temperature: 0.1
+      context_window: 8192
+
+    embedding:
+      mode: huggingface
+      ingest_mode: simple
+
+    huggingface:
+      embedding_hf_model_name: nomic-ai/nomic-embed-text-v1.5
+
+    openai:
+      # Point to vLLM service in cluster
+      api_base: http://vllm.vllm-inference.svc.cluster.local:8000/v1
+      api_key: EMPTY
+      model: meta-llama/Meta-Llama-3.1-8B-Instruct
+      request_timeout: 600.0
+
+    qdrant:
+      path: /app/local_data/qdrant
+
+    data:
+      local_data_folder: /app/local_data
+
+    ui:
+      enabled: true
+      path: /
+      default_chat_system_prompt: >
+        You are a helpful assistant. You can answer questions about documents
+        that have been uploaded to the system.
+      default_query_system_prompt: >
+        You can only answer questions about the provided context. If you know
+        the answer but it is not based in the provided context, don't provide
+        the answer, just state the answer is not in the context provided.
+      delete_file_button_enabled: true
+      delete_all_files_button_enabled: true

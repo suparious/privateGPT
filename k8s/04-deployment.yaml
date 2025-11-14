@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: private-gpt
+  namespace: private-gpt
+  labels:
+    app: private-gpt
+spec:
+  replicas: 1  # Single replica due to local storage
+  strategy:
+    type: Recreate  # Recreate strategy for PVC
+  selector:
+    matchLabels:
+      app: private-gpt
+  template:
+    metadata:
+      labels:
+        app: private-gpt
+    spec:
+      containers:
+      - name: private-gpt
+        image: suparious/private-gpt:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8001
+          name: http
+          protocol: TCP
+        env:
+        - name: PGPT_PROFILES
+          value: "vllm"
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        volumeMounts:
+        - name: config
+          mountPath: /app/settings-vllm.yaml
+          subPath: settings.yaml
+        - name: data
+          mountPath: /app/local_data
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            cpu: 2000m
+            memory: 4Gi
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 60
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        startupProbe:
+          httpGet:
+            path: /health
+            port: 8001
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 30  # Allow up to 5 minutes for startup
+      volumes:
+      - name: config
+        configMap:
+          name: private-gpt-config
+      - name: data
+        persistentVolumeClaim:
+          claimName: private-gpt-data
