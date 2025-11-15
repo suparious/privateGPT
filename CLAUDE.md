@@ -19,7 +19,7 @@
 - **OpenAI-compatible API** for programmatic access
 
 **Key Integration Points**:
-- **vLLM Service**: `http://vllm.vllm-inference.svc.cluster.local:8000/v1`
+- **vLLM Service**: `http://vllm.inference.svc.cluster.local:8000/v1`
 - **Storage**: 10Gi PVC for documents and vector database
 - **Ingress**: SSL-enabled via cert-manager DNS-01
 
@@ -126,7 +126,7 @@ mcp__chroma__chroma_query_documents(
 **LLM Integration**:
 - vLLM service (OpenAI-like API)
 - Model: meta-llama/Meta-Llama-3.1-8B-Instruct
-- Endpoint: http://vllm.vllm-inference.svc.cluster.local:8000/v1
+- Endpoint: http://vllm.inference.svc.cluster.local:8000/v1
 
 **Infrastructure**:
 - Kubernetes deployment (single replica with PVC)
@@ -315,7 +315,7 @@ kubectl logs -n private-gpt -l app=private-gpt --tail=200 | grep -i error
 
 # Check vLLM connectivity
 kubectl exec -n private-gpt -it deployment/private-gpt -- \
-  curl -s http://vllm.vllm-inference.svc.cluster.local:8000/v1/models
+  curl -s http://vllm.inference.svc.cluster.local:8000/v1/models
 ```
 
 ### Uninstall
@@ -424,7 +424,7 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 6. **vLLM Connectivity**:
    ```bash
    kubectl exec -n private-gpt -it deployment/private-gpt -- \
-     curl -s http://vllm.vllm-inference.svc.cluster.local:8000/v1/models
+     curl -s http://vllm.inference.svc.cluster.local:8000/v1/models
    ```
    - Expect: JSON response with available models
 
@@ -484,7 +484,7 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 - Configured ConfigMap for vLLM endpoint
 
 **Key Integrations**:
-- vLLM service: http://vllm.vllm-inference.svc.cluster.local:8000/v1
+- vLLM service: http://vllm.inference.svc.cluster.local:8000/v1
 - Storage: 10Gi OpenEBS hostpath PVC
 - Ingress: https://privategpt.lab.hq.solidrust.net
 - Embeddings: nomic-ai/nomic-embed-text-v1.5 (HuggingFace)

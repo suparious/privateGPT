@@ -63,7 +63,7 @@ kubectl get events -n private-gpt --sort-by='.lastTimestamp'
 
 # Test vLLM connectivity
 kubectl exec -n private-gpt -it deployment/private-gpt -- \
-  curl -s http://vllm.vllm-inference.svc.cluster.local:8000/v1/models
+  curl -s http://vllm.inference.svc.cluster.local:8000/v1/models
 ```
 
 ## 🏗️ Architecture
@@ -77,7 +77,7 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 - Nomic Embed (embeddings)
 
 **Platform Integration**:
-- **LLM**: vLLM service at `http://vllm.vllm-inference.svc.cluster.local:8000/v1`
+- **LLM**: vLLM service at `http://vllm.inference.svc.cluster.local:8000/v1`
 - **Storage**: 10Gi OpenEBS hostpath PVC
 - **Ingress**: nginx-ingress with Let's Encrypt SSL
 - **Model**: meta-llama/Meta-Llama-3.1-8B-Instruct
