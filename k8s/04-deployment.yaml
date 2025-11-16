@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: private-gpt
-        image: suparious/private-gpt:latest
+        image: ghcr.io/suparious/private-gpt:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 8001

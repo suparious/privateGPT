@@ -1,17 +1,17 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Build and push PrivateGPT Docker image to Docker Hub.
+    Build and push PrivateGPT Docker image to GitHub Container Registry.
 
 .DESCRIPTION
-    Builds the PrivateGPT Docker image with Poetry dependencies and optionally pushes to Docker Hub.
+    Builds the PrivateGPT Docker image with Poetry dependencies and optionally pushes to GitHub Container Registry.
     Supports cross-platform execution (WSL2 + Windows).
 
 .PARAMETER Login
-    Authenticate with Docker Hub before building
+    Authenticate with GitHub Container Registry before building
 
 .PARAMETER Push
-    Push the image to Docker Hub after building
+    Push the image to GitHub Container Registry after building
 
 .PARAMETER Tag
     Custom tag for the image (default: latest)
@@ -22,7 +22,7 @@
 
 .EXAMPLE
     .\build-and-push.ps1 -Login -Push
-    Build and push image to Docker Hub
+    Build and push image to GitHub Container Registry
 #>
 
 [CmdletBinding()]
@@ -84,7 +84,7 @@ function Test-DockerRunning {
     }
 }
 
-function Test-DockerHubLogin {
+function Test-GitHub Container RegistryLogin {
     $username = docker info 2>&1 | Select-String "Username:" | ForEach-Object { $_.ToString().Split(":")[1].Trim() }
     return $username -eq "suparious"
 }
@@ -102,20 +102,20 @@ if (-not (Test-DockerRunning)) {
 }
 Write-Success "Docker is running"
 
-# Handle Docker Hub login
+# Handle GitHub Container Registry login
 if ($Login) {
-    Write-Step "Logging into Docker Hub"
-    docker login
+    Write-Step "Logging into GitHub Container Registry"
+    docker login ghcr.io
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Docker login failed"
         exit 1
     }
-    Write-Success "Logged into Docker Hub"
+    Write-Success "Logged into GitHub Container Registry"
 }
 
 # Check authentication if pushing
-if ($Push -and -not (Test-DockerHubLogin)) {
-    Write-Error "Not logged into Docker Hub as 'suparious'. Run with -Login flag first."
+if ($Push -and -not (Test-GitHub Container RegistryLogin)) {
+    Write-Error "Not logged into GitHub Container Registry as 'suparious'. Run with -Login flag first."
     exit 1
 }
 
@@ -163,7 +163,7 @@ if ($LASTEXITCODE -eq 0) {
 
 # Push image
 if ($Push) {
-    Write-Step "Pushing image to Docker Hub"
+    Write-Step "Pushing image to GitHub Container Registry"
     docker push $ImageTag
     if ($LASTEXITCODE -ne 0) {
         Write-Error "Docker push failed"
