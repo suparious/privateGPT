@@ -23,55 +23,26 @@
 - **Storage**: 10Gi PVC for documents and vector database
 - **Ingress**: SSL-enabled via cert-manager DNS-01
 
-**When You Need Platform Info**: Query ChromaDB (see section below)
+**When You Need Platform Info**: Check srt-hq-k8s CLAUDE.md
 
 ---
 
-## 📚 PLATFORM INTEGRATION (ChromaDB Knowledge Base)
+## 📚 PLATFORM INTEGRATION
 
-**When working in this submodule**, you cannot access the parent srt-hq-k8s repository files. Use ChromaDB to query platform capabilities and integration patterns.
+**Related Repositories**:
+- **srt-hq-k8s**: `/Users/shaun/repos/srt-hq-k8s/` - Kubernetes platform (12 nodes)
+- **srt-hq-vllm**: `/Users/shaun/repos/srt-hq-vllm/` - vLLM inference backend
 
-**Collection**: `srt-hq-k8s-platform-guide` (43 docs, updated 2025-11-11)
-
-**Why This Matters for PrivateGPT**:
-PrivateGPT integrates deeply with the srt-hq-k8s platform:
-- **vLLM Integration**: Uses platform vLLM service for all LLM inference
-- **Storage**: Requires persistent storage for ingested documents and Qdrant vector DB
-- **Ingress**: Exposed via nginx-ingress with Let's Encrypt SSL (DNS-01)
-- **Monitoring**: Integrated with platform Prometheus/Grafana stack
-- **Networking**: Service-to-service communication within cluster
-
-**Query When You Need**:
-- Platform architecture and service discovery patterns
-- vLLM service endpoints and configuration
-- Storage class options (OpenEBS hostpath, NVMe, SATA)
-- Ingress patterns and SSL certificate setup
-- Monitoring and observability integrations
-- GPU resource allocation (if needed for embeddings)
-
-**Example Queries**:
-```
-"What is the vLLM service endpoint in the cluster?"
-"What storage classes are available in srt-hq-k8s?"
-"How do I configure ingress with SSL certificates?"
-"What monitoring tools are available on the platform?"
-```
+**Platform Features Used**:
+- **vLLM**: `http://vllm.inference.svc.cluster.local:8000/v1` for LLM inference
+- **Storage**: TrueNAS NFS for documents and Qdrant vector DB
+- **Ingress**: nginx-ingress with TLS (cert-manager DNS-01)
 
 **When NOT to Query**:
 - ❌ PrivateGPT application logic (see README.md in parent repo)
 - ❌ LlamaIndex usage patterns (see LlamaIndex docs)
 - ❌ Python/Poetry development (use project documentation)
 - ❌ Docker build process (use build-and-push.ps1)
-
-**How to Query**:
-Use the MCP Chroma tools:
-```
-mcp__chroma__chroma_query_documents(
-  collection_name: "srt-hq-k8s-platform-guide",
-  query_texts: ["your question here"],
-  n_results: 5
-)
-```
 
 ---
 
@@ -98,9 +69,9 @@ mcp__chroma__chroma_query_documents(
 ## 🗂️ LOCATIONS
 
 **Repository Locations**:
-- **Parent Repo**: `/mnt/c/Users/shaun/repos/privateGPT` (upstream source)
-- **Submodule**: `/mnt/c/Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt/` (K8s deployment)
-- **Platform Repo**: `/mnt/c/Users/shaun/repos/srt-hq-k8s` (not accessible from submodule)
+- **Parent Repo**: `/Users/shaun/repos/privateGPT` (upstream source)
+- **Submodule**: `/Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt/` (K8s deployment)
+- **Platform Repo**: `/Users/shaun/repos/srt-hq-k8s` (Kubernetes platform)
 
 **Deployment URLs**:
 - **Production**: https://privategpt.lab.hq.solidrust.net
@@ -155,9 +126,9 @@ manifests/apps/private-gpt/
     └── 06-ingress.yaml           # SSL ingress
 ```
 
-**Parent Repository** (not in submodule, see ChromaDB for info):
+**Parent Repository**:
 ```
-/mnt/c/Users/shaun/repos/privateGPT/
+/Users/shaun/repos/privateGPT/
 ├── private_gpt/                  # Main application code
 ├── settings-vllm.yaml            # vLLM configuration template
 ├── pyproject.toml                # Poetry dependencies
@@ -170,7 +141,7 @@ manifests/apps/private-gpt/
 
 ### Local Development (Parent Repo)
 ```bash
-cd /mnt/c/Users/shaun/repos/privateGPT
+cd /Users/shaun/repos/privateGPT
 
 # Install dependencies
 poetry install --extras "ui llms-openai-like embeddings-huggingface vector-stores-qdrant"
@@ -184,7 +155,7 @@ open http://localhost:8001
 
 ### Docker Development
 ```bash
-cd /mnt/c/Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt
+cd /Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt
 
 # Build image
 .\build-and-push.ps1
@@ -195,7 +166,7 @@ docker run -p 8001:8001 -e PGPT_PROFILES=vllm suparious/private-gpt:latest
 
 ### Production Deployment
 ```bash
-cd /mnt/c/Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt
+cd /Users/shaun/repos/srt-hq-k8s/manifests/apps/private-gpt
 
 # Deploy with build
 .\deploy.ps1 -Build -Push
@@ -460,7 +431,7 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 
 ✅ **Documentation**:
 - Changes documented in appropriate files
-- ChromaDB updated if platform integration changes
+- srt-hq-k8s CLAUDE.md updated if platform integration changes
 - README-K8S.md reflects current state
 
 ✅ **User Preferences Met**:
@@ -479,7 +450,7 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 - Configured persistent storage for documents and Qdrant
 - Added SSL ingress with Let's Encrypt DNS-01
 - Created deployment automation scripts (build-and-push.ps1, deploy.ps1)
-- Documented platform integration via ChromaDB
+- Documented platform integration patterns
 - Set up health checks and resource limits
 - Configured ConfigMap for vLLM endpoint
 
