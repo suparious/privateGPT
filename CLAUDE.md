@@ -467,3 +467,16 @@ kubectl exec -n private-gpt -it deployment/private-gpt -- \
 **Maintained By**: Shaun Prince
 **Agent**: Claude Code (Sonnet 4.5)
 **Platform**: srt-hq-k8s Production Cluster
+
+
+---
+
+## Ecosystem Context
+
+This repo is part of the **SolidRusT Networks** ecosystem managed by [srt-concierge](https://poseidon.hq.solidrust.net:30008/shaun/srt-concierge).
+
+For cross-repo context, service dependencies, and platform strategy:
+- **Repo inventory**: `/Users/shaun/repos/srt-concierge/docs/REPOSITORY-METADATA.md`
+- **Service map**: `/Users/shaun/repos/srt-concierge/docs/PRODUCTION-SERVICES.md`
+- **Network topology**: `/Users/shaun/repos/srt-concierge/docs/NETWORK-TOPOLOGY.md`
+- **Team registry**: `/Users/shaun/repos/srt-concierge/docs/TEAM-REGISTRY.md`
